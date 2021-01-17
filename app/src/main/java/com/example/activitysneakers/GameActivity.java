@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -29,12 +30,12 @@ import java.util.Random;
 public class GameActivity extends Activity {
     Canvas canvas;
     SnakeView snakeView;
-
+    Rect rectToBeDrawn;
     Bitmap headBitmap;
     Bitmap bodyBitmap;
     Bitmap tailBitmap;
     Bitmap appleBitmap;
-
+    Bitmap bg_color;
     //Sound
     //initialize sound variables
     private SoundPool soundPool;
@@ -73,9 +74,11 @@ public class GameActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         loadSound();
         configureDisplay();
         snakeView = new SnakeView(this);
+        bg_color = BitmapFactory.decodeResource(getResources(),R.drawable.background);
         setContentView(snakeView);
     }
 
@@ -204,7 +207,10 @@ public class GameActivity extends Activity {
             if (ourHolder.getSurface().isValid()) {
                 canvas = ourHolder.lockCanvas();
                 //Paint paint = new Paint();
-                canvas.drawColor(Color.DKGRAY);//the background
+                Rect destRect2 = new Rect(screenWidth/200,screenHeight/200,screenWidth/1,screenHeight/1);
+                canvas.drawBitmap(bg_color,rectToBeDrawn,destRect2,paint);
+               // canvas.drawColor(Color.DKGRAY);//the background
+
                 paint.setColor(Color.argb(255, 255, 255, 255));
                 paint.setTextSize(topGap/2);
                 canvas.drawText("Score:" + score + "  Hi:" + hi, 10, topGap-6, paint);
